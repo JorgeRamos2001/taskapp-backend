@@ -1,7 +1,13 @@
 package com.taskapp.auth.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -10,9 +16,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "refresh_tokens")
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = { "user" })
 @EqualsAndHashCode(of = "id")

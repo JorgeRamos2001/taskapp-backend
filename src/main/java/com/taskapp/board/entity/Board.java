@@ -3,7 +3,14 @@ package com.taskapp.board.entity;
 import com.taskapp.auth.entity.User;
 import com.taskapp.boardtask.entity.BoardTask;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -15,9 +22,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "boards")
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = { "owner", "boardMembers" })
 @EqualsAndHashCode(of = "id")
@@ -31,9 +37,11 @@ public class Board {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @Setter
     @Column(nullable = false, length = 100)
     private String title;
 
+    @Setter
     @Column(columnDefinition = "TEXT")
     private String description;
 
