@@ -6,7 +6,14 @@ import com.taskapp.boardtask.entity.BoardTask;
 import com.taskapp.comment.entity.Comment;
 import com.taskapp.personaltask.entity.PersonalTask;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,9 +28,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = { "password", "boardMembers", "boardTasks", "comments", "personalTasks" })
 @EqualsAndHashCode(of = "id")
@@ -40,6 +46,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false, length = 255)
+    @Setter
     private String password;
 
     @Column(name = "url_avatar", length = 255)

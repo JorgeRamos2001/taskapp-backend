@@ -7,7 +7,14 @@ import com.taskapp.boardtask.entity.enums.BoardTaskState;
 import com.taskapp.comment.entity.Comment;
 import com.taskapp.subtask.entity.SubTask;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -19,9 +26,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "board_tasks")
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = { "board", "assignee", "subTasks", "comments" })
 @EqualsAndHashCode(of = "id")
@@ -35,24 +41,30 @@ public class BoardTask {
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignee_id", nullable = false)
     private User assignee;
 
+    @Setter
     @Column(nullable = false, length = 100)
     private String title;
 
+    @Setter
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Setter
     @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private BoardTaskPriority priority;
 
+    @Setter
     @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private BoardTaskState state;
 
+    @Setter
     @Column(name = "due_date")
     private LocalDateTime dueDate;
 

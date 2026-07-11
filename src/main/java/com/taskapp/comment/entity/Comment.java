@@ -3,7 +3,13 @@ package com.taskapp.comment.entity;
 import com.taskapp.auth.entity.User;
 import com.taskapp.boardtask.entity.BoardTask;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -12,9 +18,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "comments")
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(exclude = { "task", "user" })
 @EqualsAndHashCode(of = "id")
