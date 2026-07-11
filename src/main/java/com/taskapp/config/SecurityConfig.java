@@ -1,9 +1,9 @@
 package com.taskapp.config;
 
-import com.taskapp.security.JwtAccessDeniedHandler;
-import com.taskapp.security.JwtAuthEntryPoint;
-import com.taskapp.security.JwtAuthenticationFilter;
-import com.taskapp.security.UserDetailsServiceImpl;
+import com.taskapp.auth.security.JwtAccessDeniedHandler;
+import com.taskapp.auth.security.JwtAuthEntryPoint;
+import com.taskapp.auth.security.JwtAuthenticationFilter;
+import com.taskapp.auth.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
