@@ -14,6 +14,7 @@ import com.taskapp.subtask.repository.SubTaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ public class SubTaskServiceImpl implements SubTaskService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public SubTaskResponse create(String email, UUID taskId, SubTaskRequest request) {
         log.warn("Creating sub task for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
@@ -43,6 +45,7 @@ public class SubTaskServiceImpl implements SubTaskService {
     }
 
     @Override
+    @Transactional
     public SubTaskResponse complete(String email, UUID taskId, UUID subTaskId) {
         log.warn("Completing sub task for user: {}", email);
         SubTask subTask = subTaskRepository.findById(subTaskId).orElseThrow(() -> new EntityNotFoundException("Sub task not found."));
@@ -61,6 +64,7 @@ public class SubTaskServiceImpl implements SubTaskService {
     }
 
     @Override
+    @Transactional
     public void delete(String email, UUID taskId, UUID subTaskId) {
         log.warn("Deleting sub task for user: {}", email);
         SubTask subTask = subTaskRepository.findById(subTaskId).orElseThrow(() -> new EntityNotFoundException("Sub task not found."));

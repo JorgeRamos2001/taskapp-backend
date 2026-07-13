@@ -15,6 +15,7 @@ import com.taskapp.shared.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -28,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public CommentResponse create(String email, UUID boardTaskId, CommentRequest request) {
         log.warn("Creating comment for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(boardTaskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
@@ -45,6 +47,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void delete(String email, UUID boardTaskId, UUID commentId) {
         log.warn("Deleting comment for user: {}", email);
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new EntityNotFoundException("Comment not found."));
