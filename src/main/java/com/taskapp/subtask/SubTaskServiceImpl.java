@@ -32,7 +32,7 @@ public class SubTaskServiceImpl implements SubTaskService {
         log.warn("Creating sub task for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
         User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found."));
-        if (!user.getId().equals(boardTask.getAssignee().getId()) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
+        if ((boardTask.getAssignee() == null || !user.getId().equals(boardTask.getAssignee().getId())) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
             throw new ValidationException("User does not have access to this board.");
         }
         SubTask subTask = SubTask.builder()
@@ -52,7 +52,7 @@ public class SubTaskServiceImpl implements SubTaskService {
         BoardTask boardTask = subTask.getBoardTask();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found."));
 
-        if (!user.getId().equals(boardTask.getAssignee().getId()) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
+        if ((boardTask.getAssignee() == null || !user.getId().equals(boardTask.getAssignee().getId())) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
             throw new ValidationException("User does not have access to this board.");
         }
         if (Boolean.TRUE.equals(subTask.getCompleted())) {
@@ -71,7 +71,7 @@ public class SubTaskServiceImpl implements SubTaskService {
         BoardTask boardTask = subTask.getBoardTask();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found."));
 
-        if (!user.getId().equals(boardTask.getAssignee().getId()) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
+        if ((boardTask.getAssignee() == null || !user.getId().equals(boardTask.getAssignee().getId())) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
             throw new ValidationException("User does not have access to this board.");
         }
         subTaskRepository.deleteById(subTaskId);

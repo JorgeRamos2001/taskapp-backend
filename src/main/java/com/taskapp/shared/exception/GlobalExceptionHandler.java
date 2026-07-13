@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import io.jsonwebtoken.MalformedJwtException;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +70,12 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
         return buildResponse(HttpStatus.BAD_REQUEST, "VALIDATION_ERROR", errors, request);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<ExceptionResponse> handleMalformedJwtException(MalformedJwtException ex, WebRequest request) {
+        log.warn("Invalid JWT token: {}", ex.getMessage());
+        return buildResponse(HttpStatus.BAD_REQUEST, "INVALID_TOKEN", "Invalid token format.", request);
     }
 
     @ExceptionHandler(Exception.class)

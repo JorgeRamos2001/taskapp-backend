@@ -133,6 +133,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String generateAndSaveRefreshToken(User user) {
+        refreshTokenRepository.deleteByUserId(user.getId());
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(jwtService.generateRefreshToken(user))
                 .expiresAt(LocalDateTime.now().plusSeconds(REFRESH_TOKEN_EXPIRATION_TIME / 1000))
