@@ -20,6 +20,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
+    public UserResponse getCurrentUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found."));
+        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getUrlAvatar());
+    }
+
+    @Override
     @Transactional
     public UserResponse changePassword(ChangePasswordRequest request, String email) {
         log.warn("Changing password for user: {}", email);

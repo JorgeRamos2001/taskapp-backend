@@ -110,6 +110,7 @@ public class BoardTaskServiceImpl implements BoardTaskService {
     }
 
     @Override
+    @Transactional
     public void delete(String email, UUID taskId) {
         log.warn("Deleting board task for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
@@ -121,6 +122,7 @@ public class BoardTaskServiceImpl implements BoardTaskService {
     }
 
     @Override
+    @Transactional
     public void assignTask(UUID taskId, String email, AssignBoardTaskRequest request) {
         log.warn("Assigning task for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
@@ -130,14 +132,16 @@ public class BoardTaskServiceImpl implements BoardTaskService {
         }
         User assign = userRepository.findById(request.userId()).orElseThrow(() -> new EntityNotFoundException("User not found."));
 
-        if (assign.getId().equals(boardTask.getAssignee().getId())) {
+        if (boardTask.getAssignee() != null && assign.getId().equals(boardTask.getAssignee().getId())) {
             throw new ValidationException("User is already assigned to this task.");
         }
         boardTask.setAssignee(assign);
+        boardTask.setState(BoardTaskState.IN_PROGRESS);
         boardTaskRepository.save(boardTask);
     }
 
     @Override
+    @Transactional
     public void unassignTask(UUID taskId, String email) {
         log.warn("Unassigning task for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(taskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
@@ -150,6 +154,7 @@ public class BoardTaskServiceImpl implements BoardTaskService {
             throw new ValidationException("Task is not assigned to anyone.");
         }
         boardTask.setAssignee(null);
+        boardTask.setState(BoardTaskState.UNASSIGNED);
         boardTaskRepository.save(boardTask);
     }
 

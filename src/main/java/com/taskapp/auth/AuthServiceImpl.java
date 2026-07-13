@@ -95,7 +95,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public AuthResponse refreshToken(RefreshTokenRequest request, String email) {
+    public AuthResponse refreshToken(RefreshTokenRequest request) {
+        String email = jwtService.extractEmail(request.refreshToken());
         log.warn("Refreshing token for user: {}", email);
 
         RefreshToken refreshToken = refreshTokenRepository.findByToken(request.refreshToken()).orElseThrow(() -> new EntityNotFoundException("Refresh token not found."));
@@ -117,7 +118,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public void logout(LogoutRequest request, String email) {
+    public void logout(LogoutRequest request) {
+        String email = jwtService.extractEmail(request.refreshToken());
         log.info("Logging out user: {}", email);
 
         RefreshToken refreshToken = refreshTokenRepository.findByToken(request.refreshToken()).orElseThrow(() -> new EntityNotFoundException("Refresh token not found."));
