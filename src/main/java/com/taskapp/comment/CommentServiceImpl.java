@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
         log.warn("Creating comment for user: {}", email);
         BoardTask boardTask = boardTaskRepository.findById(boardTaskId).orElseThrow(() -> new EntityNotFoundException("Board task not found."));
         User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found."));
-        if (!user.getId().equals(boardTask.getAssignee().getId()) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
+        if ((boardTask.getAssignee() == null || !user.getId().equals(boardTask.getAssignee().getId())) && boardTask.getBoard().getBoardMembers().stream().noneMatch(member -> member.getUser().getId().equals(user.getId()))) {
             throw new ValidationException("User does not have access to this board.");
         }
         Comment comment = Comment.builder()
