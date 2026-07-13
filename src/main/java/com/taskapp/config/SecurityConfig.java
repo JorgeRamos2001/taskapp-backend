@@ -3,6 +3,8 @@ package com.taskapp.config;
 import com.taskapp.auth.security.JwtAccessDeniedHandler;
 import com.taskapp.auth.security.JwtAuthEntryPoint;
 import com.taskapp.auth.security.JwtAuthenticationFilter;
+import com.taskapp.auth.security.OAuth2SuccessHandler;
+import com.taskapp.auth.security.OAuth2UserServiceImpl;
 import com.taskapp.auth.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +31,8 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final OAuth2UserServiceImpl oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/**",
@@ -50,6 +54,9 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
                 )
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
