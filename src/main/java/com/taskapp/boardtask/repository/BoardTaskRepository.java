@@ -12,12 +12,12 @@ import java.util.UUID;
 @Repository
 public interface BoardTaskRepository extends JpaRepository<BoardTask, UUID> {
 
-    @EntityGraph(attributePaths = {"assignee", "subTasks", "comments", "comments.user"})
+    //@EntityGraph(attributePaths = {"assignee"})
     List<BoardTask> findByBoardId(UUID boardId);
 
-    @EntityGraph(attributePaths = {"assignee", "subTasks", "comments", "comments.user"})
+    @EntityGraph(attributePaths = {"assignee"})
     List<BoardTask> findByAssigneeId(UUID assigneeId);
 
-    @EntityGraph(attributePaths = {"assignee", "subTasks", "comments", "comments.user"})
+    @EntityGraph(attributePaths = {"assignee"})
     List<BoardTask> findByBoardIdAndState(UUID boardId, BoardTaskState state);
 }

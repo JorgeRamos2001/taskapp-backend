@@ -9,6 +9,6 @@ import com.taskapp.auth.dto.response.AuthResponse;
 public interface AuthService {
     AuthResponse register(RegisterRequest request);
     AuthResponse login(LoginRequest request);
-    AuthResponse refreshToken(RefreshTokenRequest request, String email);
-    void logout(LogoutRequest request, String email);
+    AuthResponse refreshToken(RefreshTokenRequest request);
+    void logout(LogoutRequest request);
 }
